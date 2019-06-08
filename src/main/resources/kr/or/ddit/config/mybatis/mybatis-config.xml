@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- null 처리 -->
+	<settings>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+	<!-- 이부분 추가 -->
+	<typeAliases>
+		<typeAlias  alias="userVO" type="kr.or.ddit.user.model.UserVO"/>
+		<typeAlias  alias="boardVO" type="kr.or.ddit.board.model.BoardVO"/>
+		<typeAlias  alias="attachVO" type="kr.or.ddit.attach.model.AttachVO"/>
+		<typeAlias  alias="commentVO" type="kr.or.ddit.comment.model.CommentVO"/>
+		<typeAlias  alias="postVO" type="kr.or.ddit.post.model.PostVO"/>
+		<typeAlias  alias="pageVo" type="kr.or.ddit.paging.model.PageVO"/>
+	</typeAliases>
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+        <property name="username" value="pc19"/>
+        <property name="password" value="java"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/user.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/board.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/attachment.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/comment.xml"/>
+    <mapper resource="kr/or/ddit/config/mybatis/mapper/post.xml"/>
+  </mappers>
+</configuration>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+  <select id="userList" resultType="userVO">
+    SELECT 	* 
+    FROM 	users
+  </select>
+  
+  <select id="getUser" parameterType="String" resultType="userVO">
+  	SELECT *
+  	FROM	users
+  	WHERE	USERID = #{userId}
+  	ORDER BY USERID
+  </select>
+  
+  	<!-- 사용자 페이지 리스트 조회 -->
+	<!-- pageVo int page, int pageSize -->
+  <select id = "userPagingList" parameterType="pageVo" resultType="userVO">
+  	<![CDATA[
+  	SELECT *
+	FROM
+	(
+		SELECT a.*, rownum rn
+	 	FROM 
+		(
+			SELECT a.*
+			 FROM USERS a
+			 ORDER BY USERID)
+		a)
+		
+	WHERE rn >= (#{page}-1)*#{pageSize} +1 and rn<= #{page}*#{pageSize}
+	]]>
+<!-- 	WHERE rn &gt;= 1 AND  rn &lt;= 10 ; -->
+  </select>
+
+
+	<!-- 사용자 전체수 조회 -->
+	<select id = "usersCount" resultType="int">
+ 		SELECT  COUNT(*)
+		FROM    USERS
+	</select>
+	
+	
+	<insert id="insertUser" parameterType="userVO">
+		INSERT INTO USERS 
+        VALUES(	#{userId},
+        		#{name},
+        		#{alias},
+        		#{pass},
+                #{addr1},
+                #{addr2},
+                #{path},
+                #{filename},
+                #{zipcd},
+                #{birth}
+         )
+	</insert>
+	
+	<!-- 사용자 삭제 -->
+	<delete id="deleteUser" parameterType="String">
+		DELETE 	USERS
+		WHERE	USERID=#{userId}
+	</delete>
+	
+	<!-- 사용자 수정 -->
+	<update id="modiUser" parameterType="userVO">
+		UPDATE 	USERS
+		SET		NAME = #{name},
+        		ALIAS = #{alias},
+        		PASS = #{pass},
+                ADDR1 = #{addr1},
+                ADDR2 = #{addr2},
+                PATH = #{path},
+                FILENAME = #{filename},
+                ZIPCD = #{zipcd},
+                BIRTH = #{birth}
+		WHERE	USERID = #{userId}
+	</update>
+	
+	<!-- 사용자 비밀번호 암호화 적용 대상 조회 -->
+	<select id="userListForPassEncrypt" resultType="userVO">
+		SELECT 	*
+		FROM 	USERS
+		WHERE 	USERID NOT IN ('brown','userTest')
+	</select>
+	
+	<!-- 사용자 비밀번호 업데이트 -->
+	<update id="updateUserEncryptPass" parameterType="userVO">
+		UPDATE	USERS
+		SET		PASS = #{pass}
+		WHERE	USERID = #{userId}
+	</update>
+</mapper>
