@@ -59,7 +59,7 @@
 			
 			var mentId = $(this).find(".mentId").val();
 			
-			
+			$("#deleteCommentFrm").submit();
 		})
 	})
 	
@@ -162,7 +162,7 @@
 						</form>
 						
 						<!-- 댓글삭제버튼 클릭시 -->
-						<form action="${pageContext.request.contextPath}/commentUpdate" method="post">
+						<form id="deleteCommentFrm" action="${pageContext.request.contextPath}/commentUpdate" method="post">
 							<input type="hidden" id="deleteComment" name="deleteComment"/>
 							<input type="hidden" id="deleteId" name="deleteId"/>
 						</form>
