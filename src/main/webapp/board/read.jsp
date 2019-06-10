@@ -12,7 +12,7 @@
 <title>사용자 상세조회</title>
 <%@include file="/common/basicLib.jsp"%>
 <style>
-	#button, #delete, #comment, #reply{
+	#commentbtn,#button, #delete, #comment, #reply{
 		float: right;
 	}
 	textarea.autosize { min-height: 50px; border:none; resize: none;}
@@ -26,27 +26,40 @@
 	
 	$(document).ready(function(){
 		var id = $("#labelId").text();
+		//수정버튼 클릭시
 		$("#button").on("click", function(){
 			$("#userId").val(id);
 			
 			$("#frm").submit();
 		})
 		
+		//삭제버튼 클릭시
 		$("#delete").on("click", function(){
 			$("#frmDelete").submit();
 		})
-		//답글
+		
+		//답글버튼 클릭시
 		$("#reply").on("click", function(){
 			$("#frmComment").submit();
 		})
 		
-		//댓글
+		//댓글버튼 클릭시
 		$("#comment").on("click", function(){
 			if($("#commentText").val()==""){
 				alert("댓글을 입력해 주세요.");
 				return;
 			}
 			$("#commentFrm").submit();
+		})
+		
+		//댓글삭제버튼 클릭시
+		$(".commentbtn").on("click", function(){
+			var id = $(this).prev().prev().val();
+			
+			
+			var mentId = $(this).find(".mentId").val();
+			
+			
 		})
 	})
 	
@@ -70,8 +83,12 @@
 					<div class="col-sm-8 blog-main">
 						<h2 class="sub-header">게시글 상세 페이지</h2>
 
-						<form id="frm" action="${pageContext.request.contextPath}/updatePost" class="form-horizontal" role="form" method="post">
+						<form id="frm" action="${pageContext.request.contextPath}/updatePost" class="form-horizontal" role="form" method="get">
 							<input type="hidden" name="boardId" value="${postVO.boardid}"/>
+							<input type="hidden" name="postId" value="${postVO.postid}"/>
+							<input type="hidden" name="content" value="${postVO.contentcul}"/>
+							<input type="hidden" name="title" value="${postVO.titlecul}"/>
+							
 							<div class="form-group">
 								<label for="userNm" class="col-sm-2 control-label">제목</label>
 								<div class="col-sm-10">
@@ -81,9 +98,7 @@
 
 							<div class="form-group">
 								<label for="userNm" class="col-sm-2 control-label">글내용</label>
-								<div class="col-sm-10">
-									<textarea class="autosize" style="width: 766px;" onkeydown="resize(this)" onkeyup="resize(this)" readonly></textarea>
-								</div>
+								<div class="col-sm-10">${postVO.contentcul}</div>
 							</div>
 
 							<div class="form-group">
@@ -114,18 +129,31 @@
 								</div>
 							</div>
 						</form>
+						<br>
 						
 						<!-- 댓글 저장 버튼 클릭시 -->
 						<form id="commentFrm" action="${pageContext.request.contextPath}/comment" class="form-horizontal" role="form">
 							<div class="form-group">
 								<label for="userNm" class="col-sm-2 control-label">댓글</label>
 								<div class="col-sm-10">
+								
 									<c:forEach items="${commentList}" var="commentVO">
+										<input id="mentId" name="mentId" type="hidden" value="${commentVO.mentid}"/>
 										<fmt:formatDate value="${commentVO.dtcreation}" var="date"/> 
-										<label>${commentVO.contentcul}   [${commentVO.userid}/${date}]</label><br>
+										<c:choose>
+											<c:when test="${commentVO.deletecul eq 'N'}">
+												<label>${commentVO.contentcul}   [${commentVO.userid}/${date}]</label>
+											</c:when>
+											<c:otherwise>
+												<label>삭제된 댓글 입니다</label>
+											</c:otherwise>
+										</c:choose>
+										
+										<button id="commentbtn" name="commentbtn" type="button" class="btn btn-default commentbtn">댓글 삭제</button><br><br>
 									</c:forEach>
+									
 									<input id="commentText" type="text" name="comment"/>
-									<input type="hidden" name="boardId" value="${postVO.boardid}"/>
+									<input type="hidden" name="boardId" value="${boardId}"/>
 									<input type="hidden" name="userId" value="${userVO.userid}"/>
 									<input type="hidden" name="postId" value="${postVO.postid}"/>
 									<button id="comment" type="button" class="btn btn-default">댓글저장</button>
@@ -133,6 +161,11 @@
 							</div>
 						</form>
 						
+						<!-- 댓글삭제버튼 클릭시 -->
+						<form action="${pageContext.request.contextPath}/commentUpdate" method="post">
+							<input type="hidden" id="deleteComment" name="deleteComment"/>
+							<input type="hidden" id="deleteId" name="deleteId"/>
+						</form>
 						
 						<!-- 삭제버튼 클릭시 -->
 						<form id="frmDelete" action="${pageContext.request.contextPath}/delete" method="post" class="form-horizontal" role="form">
@@ -141,8 +174,8 @@
 						</form>
 						
 						<!-- 답글버튼 클릭시 -->
-						<form id="frmComment" action="${pageContext.request.contextPath}/SE2/index.jsp" method="post" class="form-horizontal" role="form">
-							<input id="delete" type="hidden" name="postId" value="${postVO.postid}"/>
+						<form id="frmComment" action="${pageContext.request.contextPath}/reply" method="Get" class="form-horizontal" role="form">
+							<input id="postId" type="hidden" name="postId" value="${postVO.postid}"/>
 							<input id="boardId" type="hidden" name="boardId" value = "${boardVO.boardid}"/>
 						</form>
 					</div>

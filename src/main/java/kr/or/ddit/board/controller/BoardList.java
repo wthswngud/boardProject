@@ -73,21 +73,17 @@ public class BoardList extends HttpServlet {
 		
 		List<PostVO> postList = postService.postPagingList(map);
 		
-		Map<String, Object> resultMap = postService.getPaging(pageVO);
+		Map<String, Object> resultMap = postService.getPaging(boardId, pageVO);
 		List<PostVO> postList1 = (List<PostVO>) resultMap.get("postList");
 		int paginationSize = (int) resultMap.get("paginationSize");
 		
 		logger.debug("boardVO : {}", boardVO);
 		
-//		List<PostVO> postList = new ArrayList<PostVO>();
-//		postList = postService.postList(boardVO.getBoardid());
-		
-//		UserVO userVO = (UserVO) request.getSession().getAttribute("USER_INFO");
-//		String userid = userVO.getUserid();
-//		logger.debug("userId : {}", userid);
 		
 		request.setAttribute("boardid", boardId);
 		request.setAttribute("postList", postList);
+		getServletContext().setAttribute("postList", postList);
+		
 		request.setAttribute("paginationSize", paginationSize);
 		request.setAttribute("pageVO", pageVO);
 		
@@ -96,6 +92,7 @@ public class BoardList extends HttpServlet {
 		
 		request.setAttribute("allList", list);
 		request.setAttribute("boardList", boardList);
+		getServletContext().setAttribute("boardList", boardList);
 		request.getRequestDispatcher("/common/left.jsp");
 
 		request.setAttribute("boardName", boardName);

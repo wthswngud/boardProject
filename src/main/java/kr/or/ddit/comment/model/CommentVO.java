@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class CommentVO {
 	private int postid;
+	private int boardid;
 	private String contentcul;
 	private int mentid;
 	private String deletecul;
@@ -11,9 +12,11 @@ public class CommentVO {
 	private String userid;
 	
 	
-	public CommentVO(int postid, String contentcul, int mentid, String deletecul, Date dtcreation, String userid) {
+	public CommentVO(int postid, int boardid, String contentcul, int mentid,
+			String deletecul, Date dtcreation, String userid) {
 		super();
 		this.postid = postid;
+		this.boardid = boardid;
 		this.contentcul = contentcul;
 		this.mentid = mentid;
 		this.deletecul = deletecul;
@@ -30,6 +33,12 @@ public class CommentVO {
 	}
 	public void setPostid(int postid) {
 		this.postid = postid;
+	}
+	public int getBoardid() {
+		return boardid;
+	}
+	public void setBoardid(int boardid) {
+		this.boardid = boardid;
 	}
 	public String getContentcul() {
 		return contentcul;
@@ -60,5 +69,13 @@ public class CommentVO {
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	
+	@Override
+	public String toString() {
+		return "CommentVO [postid=" + postid + ", boardid=" + boardid
+				+ ", contentcul=" + contentcul + ", mentid=" + mentid
+				+ ", deletecul=" + deletecul + ", dtcreation=" + dtcreation
+				+ ", userid=" + userid + "]";
 	}
 }

@@ -3,6 +3,7 @@ package kr.or.ddit.comment.service;
 import java.util.List;
 
 import kr.or.ddit.comment.model.CommentVO;
+import kr.or.ddit.post.model.PostVO;
 
 public interface ICommentService {
 	/**
@@ -22,5 +23,5 @@ public interface ICommentService {
 	* @return
 	* Method 설명 : 해당 게시글의 댓글을 조회하는 메서드
 	*/
-	List<CommentVO> selectComment(int postId);
+	List<CommentVO> selectComment(CommentVO cv);
 }

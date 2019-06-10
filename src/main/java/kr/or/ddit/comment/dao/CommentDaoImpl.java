@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import kr.or.ddit.comment.model.CommentVO;
 import kr.or.ddit.mybatis.MyBatisUtil;
+import kr.or.ddit.post.model.PostVO;
 
 public class CommentDaoImpl implements ICommentDao{
 	/**
@@ -33,10 +34,19 @@ public class CommentDaoImpl implements ICommentDao{
 	* Method 설명 : 해당 게시글의 댓글을 조회하는 메서드
 	*/
 	@Override
-	public List<CommentVO> selectComment(int postId) {
+	public List<CommentVO> selectComment(CommentVO cv) {
 		SqlSession sqlSession = MyBatisUtil.getSqlSession();
-		List<CommentVO> list= sqlSession.selectList("comment.selectComment", postId);
+		List<CommentVO> list= sqlSession.selectList("comment.selectComment", cv);
 		sqlSession.close();
 		return list;
+	}
+
+	@Override
+	public int deleteComment(int mentId) {
+		SqlSession sqlSession = MyBatisUtil.getSqlSession();
+		int result = sqlSession.update("comment.deleteComment", mentId);
+		sqlSession.commit();
+		sqlSession.close();
+		return result;
 	}
 }

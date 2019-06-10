@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.or.ddit.board.model.BoardVO;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
+import kr.or.ddit.user.model.UserVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,14 +35,21 @@ public class WritePostController extends HttpServlet {
 		String result2 = request.getParameter("boardId");
 		
 		if(result1==null){
-			result1 = "0"; 
+			result1 = "0";
 		}
 		
 		int postId = Integer.parseInt(result1);
 		int boardId = Integer.parseInt(result2);
 		
 		List<BoardVO> boardList = boardService.boardList();
+		UserVO userVO = (UserVO) request.getSession().getAttribute("USER_INFO");
+		if(userVO == null){
+			request.getRequestDispatcher("/login").forward(request, response);
+			return;
+		}
 		
+		
+		request.setAttribute("userId", userVO.getUserid());
 		request.setAttribute("postId", postId);
 		request.setAttribute("boardId", boardId);
 		request.setAttribute("boardList", boardList);

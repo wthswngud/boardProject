@@ -43,7 +43,7 @@ $(document).ready(function() {
 	// 전송버튼 클릭이벤트
 	$("#savebutton").click(function(){
 		if($("#userId").val()==null){
-			alert("로그인한 회원만 게시물을 작성할 수 있습니다.");
+			alert("로그인한 회원만 답글을 작성할 수 있습니다.");
 			return;
 		}
 		if(confirm("저장하시겠습니까?")) {
@@ -88,9 +88,10 @@ function validation(){
 						<div class="blog-post">
 							<hr>
 							<div id="board">
-								<input id="userId" type="hidden" value="userId"/>
-								<form action="${pageContext.request.contextPath}/write" method="post" id="frm">
+								<input id="userId" type="hidden" value="${userVO.userid}"/>
+								<form action="${pageContext.request.contextPath}/reply" method="post" id="frm">
 									<input type="hidden" name="boardId" value="${boardId}"/>
+									<input type="hidden" name="postId" value="${postId}"/>
 								
 									<label>제목</label>&nbsp;&nbsp; <input type="text" id="title" name="title" /><br><br>
 

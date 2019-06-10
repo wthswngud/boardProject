@@ -34,12 +34,27 @@ public class CommentDaoImplTest {
 	@Test
 	public void selectComment(){
 		/***Given***/
-
+		CommentVO cv = new CommentVO();
+		cv.setBoardid(18);
+		cv.setPostid(89);
+		
 		/***When***/
-		List<CommentVO> list = dao.selectComment(1);
+		List<CommentVO> list = dao.selectComment(cv);
 
 		/***Then***/
-		assertEquals(3, list.size());
+		assertEquals(1, list.size());
 		logger.debug("날짜 : " + list.get(0).getDtcreation());
+	}
+	
+	@Test
+	public void deleteComment(){
+		/***Given***/
+		
+
+		/***When***/
+		int result = dao.deleteComment(22);
+
+		/***Then***/
+		assertEquals(1, result);
 	}
 }

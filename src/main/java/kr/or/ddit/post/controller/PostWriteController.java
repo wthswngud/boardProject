@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.or.ddit.post.model.PostVO;
 import kr.or.ddit.post.service.IPostService;
 import kr.or.ddit.post.service.PostServiceImpl;
+import kr.or.ddit.user.model.UserVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,8 @@ public class PostWriteController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		
 		String title = request.getParameter("title");
 		String result = request.getParameter("boardId");
 		String content = request.getParameter("smarteditor");
@@ -45,16 +48,25 @@ public class PostWriteController extends HttpServlet {
 		
 		PostVO postVO = new PostVO();
 		
+		UserVO userVO = (UserVO) request.getSession().getAttribute("USER_INFO");
+		if(userVO == null){
+			request.getRequestDispatcher("/login").forward(request, response);
+			return;
+		}
+		
 		postVO.setTitlecul(title);
 		postVO.setContentcul(content);
 		postVO.setBoardid(boardId);
+		postVO.setUserid(userVO.getUserid());
 		
 		int insertResult = postService.insertPost(postVO);
 		
-		
-		
 		if(insertResult>0){
-			request.setAttribute(name, o);
+			//현재 게시물 번호중 제일 큰값을 조회하는 메서드
+			int postId = postService.postIdMaxValue();
+			request.setAttribute("postId", postId+"");
+			request.setAttribute("boardId", result);
+			logger.debug("게시물 제일 큰 값 : " + postId);
 			request.getRequestDispatcher("/read").forward(request, response);
 		}
 	}

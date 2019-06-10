@@ -44,9 +44,16 @@ public class ReadBoardController extends HttpServlet {
 		int postId = 0;
 		int boardId = 0;
 		
+		
 		String resultBoardId = request.getParameter("boardId");
 		String resultPostId = request.getParameter("postId");
 		
+		if(resultPostId==null){
+			resultPostId=(String) request.getAttribute("postId");
+		}
+		
+		logger.debug("boardId : " + resultBoardId);
+		logger.debug("postId : " + resultPostId);
 		
 		if(resultBoardId!=null){
 			boardId = Integer.parseInt(resultBoardId);
@@ -59,11 +66,21 @@ public class ReadBoardController extends HttpServlet {
 		postVO.setBoardid(boardId);
 		postVO.setPostid(postId);
 		
+		CommentVO cv = new CommentVO();
+		cv.setBoardid(boardId);
+		cv.setPostid(postId);
+		
 		UserVO userVO = (UserVO) request.getSession().getAttribute("USER_INFO");
+		if(userVO == null){
+			request.getRequestDispatcher("/login").forward(request, response);
+			return;
+		}
+		
 		BoardVO boardVO = boardService.searchBoardId(boardId);
 		PostVO postVO1 = postService.searchPostId(postVO);
-		List<CommentVO> list = commentService.selectComment(postId);	// 해당 게시글의 댓글을 반환하는 메서드
+		List<CommentVO> list = commentService.selectComment(cv);	// 해당 게시글의 댓글을 반환하는 메서드
 		
+		logger.debug("postVO1 : {}", postVO1);
 		
 		
 		List<BoardVO> boardList = boardService.boardList();
@@ -81,6 +98,6 @@ public class ReadBoardController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		doGet(request, response);
 	}
 }

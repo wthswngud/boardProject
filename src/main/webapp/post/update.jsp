@@ -81,7 +81,7 @@ function validation(){
 			<%@include file="/common/left.jsp"%>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="blog-header">
-					<h1 class="blog-title">게시물 작성</h1>
+					<h1 class="blog-title">게시물 수정</h1>
 				</div>
 				<div class="row">
 					<div class="col-sm-8 blog-main">
@@ -89,17 +89,18 @@ function validation(){
 							<hr>
 							<div id="board">
 								<input id="userId" type="hidden" value="userId"/>
-								<form action="${pageContext.request.contextPath}/write" method="post" id="frm">
-									<input type="hidden" name="boardId" value="${boardId}"/>
+								<form action="${pageContext.request.contextPath}/updatePost" method="post" id="frm">
+									<input type="hidden" id="boardId" name="boardId" value="${postVO.boardid}"/>
+									<input type="hidden" id="postId" name="postId" value="${postVO.postid}"/>
 								
-									<label>제목</label>&nbsp;&nbsp; <input type="text" id="title" name="title" /><br><br>
+									<label>제목</label>&nbsp;&nbsp; <input type="text" id="title" name="title" value="${postVO.titlecul}"/><br><br>
 
 									<textarea name="smarteditor" id="smarteditor" rows="10"
-										cols="100" style="width: 766px; height: 412px;"></textarea>
+										cols="100" style="width: 766px; height: 412px;">${postVO.contentcul}</textarea>
 
 									<div id="attach1">
-										<label>첨부파일</label>&nbsp;&nbsp; <input id="attach" type="file"
-											id="profile" name="profile" class="multi" maxlength="5" multiple="multiple"/><br>
+										<label>첨부파일</label>&nbsp;&nbsp; 
+										<input id="attach" type="file" id="profile" name="profile" class="multi" maxlength="5" multiple="multiple"/><br>
 									</div>
 								</form>
 								<input type="button" id="savebutton" value="서버전송" maxlength="5"/>

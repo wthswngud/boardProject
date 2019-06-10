@@ -15,32 +15,6 @@
 		WHERE	BOARDID = #{boardid}
 	</select>
 	
-	<!-- 게시글 등록 -->
-	<insert id="boardWrite" parameterType="postVO">
-		INSERT INTO POSTS1
-		(   POSTID,
-		    BOARDID,
-		    CONTENTCUL,
-		    POSTID2,
-		    DELETECUL,
-		    DTCREATION,
-		    USERID,
-		    TITLECUL,
-		    VIEWSCUL
-		)
-		VALUES
-		(
-		    board_SEQ.NEXTVAL,
-		    #{boardid},
-		    #{contentcul},
-		    #{postid2},
-		    'Y',
-		    SYSDATE,
-		    #{userid},
-		    #{titlecul},
-		    0
-		);
-	</insert>
 	
   	<!-- 사용자 페이지 리스트 조회 -->
 	<!-- pageVo int page, int pageSize -->
@@ -86,10 +60,11 @@
   </select>
   
   
-  <!-- 게시글 전체수 조회 -->
-	<select id = "postCount" resultType="int">
+  	<!-- 게시글 전체수 조회 -->
+	<select id = "postCount" parameterType="int" resultType="int">
  		SELECT  COUNT(*)
 		FROM    POSTS1
+		WHERE	BOARDID = #{boardid}
 	</select>
 	
 	<!-- 게시글 ID로 해당 게시글 조회 -->
@@ -100,8 +75,8 @@
 		AND     BOARDID=#{boardid}	
 	</select>
 	
-	<!-- 게시글 등록 -->
-	<insert id="insertPost" parameterType="postVO">
+	<!-- 게시글 등록 후 등록한 게시물의 번호를 반환하는 쿼리문 -->
+	<insert id="insertPost" keyProperty="seq" parameterType="postVO">
 		INSERT INTO POSTS1
     	VALUES(
 			POSTS1_SEQ.NEXTVAL,
@@ -113,13 +88,10 @@
 			#{contentcul},
 			SYSDATE,
 			'N',
-			#{postid}
+			POSTS1_SEQ.CURRVAL
     	)
-    	<selectKey keyProperty="seq" resultType="int">
-    		SELECT 	POSTS1_SEQ.CURRVAL
-			FROM 	DUAL
-    	</selectKey>
 	</insert>
+	
 	
 	<!-- 게시글의 삭제여부를 삭제로 바꾸는 메서드 -->
 	<update id="updatePost" parameterType="postVO">
@@ -128,4 +100,45 @@
 		WHERE	POSTID=#{postid}
 		AND		USERID = #{userid}
 	</update>
+	
+	<!-- 제일 큰 POSTID값을 반환하는 메서드 -->
+	<select id="postIdMaxValue" resultType="int">
+		SELECT	MAX(POSTID)
+		FROM	POSTS1
+	</select>
+	
+	<!-- 답글 게시글 등록 쿼리문 -->
+	<insert id="insertReply" parameterType="postVO">
+		INSERT INTO POSTS1
+    	VALUES(
+			POSTS1_SEQ.NEXTVAL,
+			#{userid},
+			#{postid2},
+			#{boardid},
+			0,
+			#{titlecul},
+			#{contentcul},
+			SYSDATE,
+			'N',
+			${groupSeq}
+    	)
+	</insert>
+	
+	<!-- 부모 게시글의 시퀀스번호를 받아서 부모정보 알아내기  -->
+	<select id="selectParent" parameterType="postVO" resultType="postVO">
+		SELECT	*
+		FROM	POSTS1
+		WHERE	POSTID = ${postid}
+	</select>
+	
+	<!-- 게시글 수정 쿼리문 -->
+	<update id="updatePostContent" parameterType="postVO">
+		UPDATE	POSTS1
+		SET		CONTENTCUL = #{contentcul},
+				TITLECUL = #{titlecul}
+		WHERE	POSTID = #{postid}
+		AND		BOARDID = #{boardid}
+	</update>
+	
+	
 </mapper>

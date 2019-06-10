@@ -25,7 +25,7 @@ public interface IPostService {
 	* @return
 	* Method 설명 : 해당하는 페이지 리스트를 반환하는 메서드
 	*/
-	Map<String, Object> getPaging(PageVO pageVO);
+	Map<String, Object> getPaging(int boardId, PageVO pageVO);
 	
 	/**
 	* Method : usersCount
@@ -34,7 +34,7 @@ public interface IPostService {
 	* @return
 	* Method 설명 : 게시글 전체수 조회
 	*/
-	int postCount();
+	int postCount(int boardId);
 	
 	/**
 	* Method : postPagingList
@@ -67,6 +67,15 @@ public interface IPostService {
 	int insertPost(PostVO postVO);
 	
 	/**
+	* Method : postIdMaxValue
+	* 작성자 : PC19
+	* 변경이력 :
+	* @return
+	* Method 설명 : 제일 큰 게시물 번호를 반환하는 메서드
+	*/
+	int postIdMaxValue();
+	
+	/**
 	* Method : updatePost
 	* 작성자 : PC19
 	* 변경이력 :
@@ -77,11 +86,32 @@ public interface IPostService {
 	int updatePost(PostVO postVO);
 	
 	/**
-	* Method : selectCurrent
+	* Method : selectGroupSeq
 	* 작성자 : PC19
 	* 변경이력 :
+	* @param postVO
 	* @return
-	* Method 설명 : 현재 posts1_seq 시퀀스의 값을 반환하는 메서드
+	* Method 설명 : 부모 게시글의 시퀀스번호를 받아서 부모정보 알아내기
 	*/
-	int selectCurrent();
+	PostVO selectParent(PostVO postVO);
+	
+	/**
+	* Method : insertReply
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 답글 게시글 등록
+	*/
+	int insertReply(PostVO postVO);
+	
+	/**
+	* Method : updatePostContent
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 게시글 수정 메서드
+	*/
+	public int updatePostContent(PostVO postVO);
 }

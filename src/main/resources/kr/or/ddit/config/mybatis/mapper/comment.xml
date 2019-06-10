@@ -11,18 +11,26 @@
     		#{postid},
     		#{contentcul},
     		SYSDATE,
-    		'N'
+    		'N',
+    		#{boardid}
     	)
 	</insert>
 	
 	<!-- 해당게시글의 댓글을 조회하는 메서드-->
-	<select id="selectComment" parameterType="int" resultType="commentVO">
-		SELECT  C.CONTENTCUL,
-        C.USERID,
-        C.DTCREATION
+	<select id="selectComment" parameterType="postVO" resultType="commentVO">
+		SELECT  C.*
 		FROM    COMMENT1 C, POSTS1 P
 		WHERE   C.POSTID = P.POSTID
 		AND		C.POSTID = #{postid}
-		ORDER BY MENTID DESC
+		AND		C.BOARDID = #{boardid}
+		
+		ORDER BY MENTID
 	</select>
+	
+	<!-- 댓글 삭제 쿼리문 -->
+	<update id="deleteComment" parameterType="int">
+		UPDATE	COMMENT1
+		SET		DELETECUL = 'Y'
+		WHERE	MENTID = #{mentid}
+	</update>
 </mapper>

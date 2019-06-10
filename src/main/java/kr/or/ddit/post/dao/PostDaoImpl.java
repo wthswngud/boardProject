@@ -51,9 +51,9 @@ public class PostDaoImpl implements IPostDao{
 	* @return
 	* Method 설명 : 사용자 전체수 조회
 	*/
-	public int postCount() {
+	public int postCount(int boardId) {
 		SqlSession sqlSession = MyBatisUtil.getSqlSession();
-		int postCnt = (int)sqlSession.selectOne("post.postCount");
+		int postCnt = (int)sqlSession.selectOne("post.postCount", boardId);
 		sqlSession.close();
 		return postCnt;
 	}
@@ -117,16 +117,66 @@ public class PostDaoImpl implements IPostDao{
 	}
 
 	/**
-	* Method : selectCurrent
+	* Method : postIdMaxValue
 	* 작성자 : PC19
 	* 변경이력 :
 	* @return
-	* Method 설명 : 현재 posts1_seq 시퀀스의 값을 반환하는 메서드
+	* Method 설명 : 제일 큰 게시물 번호를 반환하는 메서드
 	*/
 	@Override
-	public int selectCurrent() {
+	public int postIdMaxValue() {
 		SqlSession sqlSession = MyBatisUtil.getSqlSession();
-		int result = sqlSession.selectOne("post.selectCurrent");
+		int result = sqlSession.selectOne("post.postIdMaxValue");
+		sqlSession.close();
+		return result;
+	}
+
+	/**
+	* Method : selectGroupSeq
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 부모 게시글의 시퀀스번호를 받아서 부모정보 알아내기
+	*/
+	@Override
+	public PostVO selectParent(PostVO postVO) {
+		SqlSession sqlSession = MyBatisUtil.getSqlSession();
+		PostVO postVO1 = sqlSession.selectOne("post.selectParent", postVO);
+		sqlSession.close();
+		return postVO1;
+	}
+
+	/**
+	* Method : insertReply
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 답글 게시글 등록
+	*/
+	@Override
+	public int insertReply(PostVO postVO) {
+		SqlSession sqlSession = MyBatisUtil.getSqlSession();
+		int result = sqlSession.insert("post.insertReply", postVO);
+		sqlSession.commit();
+		sqlSession.close();
+		return result;
+	}
+
+	/**
+	* Method : updatePostContent
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 게시글 수정 메서드
+	*/
+	@Override
+	public int updatePostContent(PostVO postVO) {
+		SqlSession sqlSession = MyBatisUtil.getSqlSession();
+		int result = sqlSession.update("post.updatePostContent", postVO);
+		sqlSession.commit();
 		sqlSession.close();
 		return result;
 	}

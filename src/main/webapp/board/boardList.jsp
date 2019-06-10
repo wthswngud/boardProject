@@ -24,6 +24,10 @@
 .btn {
 	float: right;
 }
+
+#postid{
+	display: none;
+}
 </style>
 <script>
 	$(document).ready(function() {
@@ -35,7 +39,7 @@
 			}else{
 				if (title != '삭제된 게시글 입니다.') {
 					var postId = $(this).find(".postid").text();
-	
+					
 					$("#postId").val(postId);
 					$("#frm").submit();
 				} else {
@@ -46,7 +50,7 @@
 		
 		$(".btn").on("click", function(){
 			if($("#No").val()=="No"){
-				alert("회원만 조회가능합니다.");				
+				alert("회원만 등록 가능합니다.");				
 			}else{
 				$("#frm2").submit();
 			}
@@ -95,7 +99,7 @@
 													<c:choose>
 														<c:when test="${boardVO.deletecul == 'N'}">
 															<tr class="tr">
-																<td class="postid">${boardVO.postid}</td>
+																<td>${boardVO.rn}</td>
 																<td class="title">
 																	<c:forEach begin="1" end="${boardVO.lv}">
 																		<c:if test="${boardVO.lv>0}">
@@ -107,11 +111,12 @@
 																<td>${boardVO.userid}</td>
 																<td><fmt:formatDate value="${boardVO.dtcreation}"
 																		pattern="yyyy-MM-dd hh:mm:ss" var="date" />${date}</td>
+																<td class="postid" id="postid">${boardVO.postid}</td>
 															</tr>
 														</c:when>
 														<c:otherwise>
 															<tr class="tr">
-																<td class="postid">${boardVO.postid}</td>
+																<td>${boardVO.rn}</td>
 																<c:forEach begin="1" end="${boardVO.lv}" step="1">
 																	<c:if test="${boardVO.lv>0}">
 																		&nbsp;&nbsp;
@@ -121,6 +126,7 @@
 																<td>${boardVO.userid}</td>
 																<td><fmt:formatDate value="${boardVO.dtcreation}"
 																		pattern="yyyy-MM-dd hh:mm:ss" var="date" />${date}</td>
+																<td class="postid" id="postid">${boardVO.postid}</td>
 															</tr>
 														</c:otherwise>
 													</c:choose>
@@ -131,7 +137,7 @@
 													<c:choose>
 														<c:when test="${boardVO.deletecul == 'N'}">
 															<tr class="tr">
-																<td class="postid">${boardVO.postid}</td>
+																<td>${boardVO.rn}</td>
 																<td class="title">
 																	<c:forEach begin="1" end="${boardVO.lv}">
 																		<c:if test="${boardVO.lv>0}">
@@ -143,11 +149,12 @@
 																<td>${boardVO.userid}</td>
 																<td><fmt:formatDate value="${boardVO.dtcreation}"
 																		pattern="yyyy-MM-dd hh:mm:ss" var="date" />${date}</td>
+																<td class="postid" id="postid">${boardVO.postid}</td>
 															</tr>
 														</c:when>
 														<c:otherwise>
 															<tr class="tr">
-																<td class="postid">${boardVO.postid}</td>
+																<td>${boardVO.rn}</td>
 																<c:forEach begin="1" end="${boardVO.lv}" step="1">
 																	<c:if test="${boardVO.lv>0}">
 																		&nbsp;&nbsp;
@@ -157,6 +164,7 @@
 																<td>${boardVO.userid}</td>
 																<td><fmt:formatDate value="${boardVO.dtcreation}"
 																		pattern="yyyy-MM-dd hh:mm:ss" var="date" />${date}</td>
+																<td class="postid" id="postid">${boardVO.postid}</td>
 															</tr>
 														</c:otherwise>
 													</c:choose>
@@ -176,7 +184,7 @@
 										</c:if>
 										<c:if test="${pageVO.page!=1 }">
 											<li><a
-												href="${pageContext.request.contextPath}//boardList?page=${1}&pageSize=${requestScope.pageVO.pageSize}&boardName=${boardName}"><span>«</span></a></li>
+												href="${pageContext.request.contextPath}/boardList?page=${1}&boardName=${boardName}&boardId=${boardid}"><span><</span></a></li>
 										</c:if>
 
 										<c:if test="${pageVO.page==1}">
@@ -184,7 +192,7 @@
 										</c:if>
 										<c:if test="${pageVO.page!=1 }">
 											<li><a
-												href="${pageContext.request.contextPath}//boardList?page=${pageVO.page-1}&pageSize=${requestScope.pageVO.pageSize}&boardName=${boardName}"><span>«</span></a></li>
+												href="${pageContext.request.contextPath}/boardList?page=${pageVO.page-1}&boardName=${boardName}&boardId=${boardid}"><span>«</span></a></li>
 										</c:if>
 
 										<c:forEach begin="1" end="${paginationSize}" step="1" var="i"
@@ -194,7 +202,7 @@
 											</c:if>
 											<c:if test="${pageVO.page!=i}">
 												<li><a
-													href="${pageContext.request.contextPath}//boardList?page=${i}&pageSize=${pageVO.pageSize}&boardName=${boardName}">${i}</a></li>
+													href="${pageContext.request.contextPath}/boardList?page=${i}&boardName=${boardName}&boardId=${boardid}">${i}</a></li>
 											</c:if>
 										</c:forEach>
 
@@ -204,7 +212,7 @@
 											</c:when>
 											<c:otherwise>
 												<li><a
-													href="${pageContext.request.contextPath}//boardList?page=${pageVO.page+1}&pageSize=${pageVO.pageSize}&boardName=${boardName}"><span>»</span></a></li>
+													href="${pageContext.request.contextPath}/boardList?page=${pageVO.page+1}&boardName=${boardName}&boardId=${boardid}"><span>»</span></a></li>
 											</c:otherwise>
 										</c:choose>
 
@@ -214,7 +222,7 @@
 											</c:when>
 											<c:otherwise>
 												<li><a
-													href="${pageContext.request.contextPath}//boardList?page=${paginationSize}&pageSize=${pageVO.pageSize}&boardName=${boardName}"><span>»</span></a></li>
+													href="${pageContext.request.contextPath}/boardList?page=${paginationSize}&boardName=${boardName}&boardId=${boardid}"><span>></span></a></li>
 											</c:otherwise>
 										</c:choose>
 									</ul>

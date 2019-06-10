@@ -28,11 +28,18 @@ public class CommentPostController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
+		logger.debug("comment doGet");
 		
 		String userId = request.getParameter("userId");
 		String result = request.getParameter("postId");
 		String comment = request.getParameter("comment");
 		String boardId =request.getParameter("boardId");
+		logger.debug("boardId : " + boardId);
+		logger.debug("userId : " + userId);
+		logger.debug("postId : " + result);
+		
+		int boardid = Integer.parseInt(boardId);
+		
 		
 		int postId = Integer.parseInt(result);
 		
@@ -41,6 +48,7 @@ public class CommentPostController extends HttpServlet {
 		cv.setPostid(postId);
 		cv.setUserid(userId);
 		cv.setContentcul(comment);
+		cv.setBoardid(boardid);
 		
 		int insertResult = commentService.insertComment(cv);
 		

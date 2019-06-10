@@ -51,10 +51,10 @@ public class PostDaoImplTest {
 		
 
 		/***When***/
-		int pageCnt = dao.postCount();
+		int pageCnt = dao.postCount(1);
 		
 		/***Then***/
-		logger.debug("pageCnt : " + pageCnt);
+		assertEquals(32, pageCnt);
 	}
 	
 	
@@ -91,8 +91,8 @@ public class PostDaoImplTest {
 	public void searchPostIdTest(){
 		/***Given***/
 		PostVO postVO = new PostVO();
-		postVO.setBoardid(1);
-		postVO.setPostid(2);
+		postVO.setBoardid(18);
+		postVO.setPostid(1);
 
 		/***When***/
 		PostVO postVO1 = dao.searchPostId(postVO);
@@ -116,7 +116,18 @@ public class PostDaoImplTest {
 		/***When***/
 		int result = dao.insertPost(postVO);
 		/***Then***/
-		assertEquals(1, result);
+		assertEquals(43, result);
+	}
+	
+	@Test
+	public void postIdMaxValue(){
+		/***Given***/
+
+		/***When***/
+		int result = dao.postIdMaxValue();
+
+		/***Then***/
+		assertEquals(59, result);
 	}
 	
 	/**
@@ -142,21 +153,73 @@ public class PostDaoImplTest {
 	}
 	
 	/**
-	* Method : selectCurrent
+	* Method : selectParentTest
 	* 작성자 : PC19
 	* 변경이력 :
-	* @return
-	* Method 설명 : 현재 posts1_seq 시퀀스의 값을 반환하는 메서드
+	* Method 설명 :
 	*/
 	@Test
-	public void selectCurrent(){
+	public void selectParentTest(){
 		/***Given***/
+		PostVO postVO = new PostVO();
+		postVO.setBoardid(1);
+		postVO.setPostid(76);
+
+		/***When***/
+		PostVO postVO1 = dao.selectParent(postVO);
+		
+		/***Then***/
+		logger.debug("PostVO : {}", postVO1);
+	}
+	
+	/**
+	* Method : insertReply
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 답글 게시글 등록
+	*/
+	@Test
+	public void insertReplyTest(){
+		/***Given***/
+		PostVO postVO = new PostVO();
+		postVO.setBoardid(1);
+		postVO.setPostid2(2);
+		postVO.setGroupSeq(1);
+		postVO.setTitlecul("답글 테스트 코드");
+		postVO.setContentcul("테스트 코드");
+		postVO.setUserid("brown");
 		
 
 		/***When***/
-		int result = dao.selectCurrent();
+		int result = dao.insertReply(postVO);
 		
 		/***Then***/
-		assertEquals(23, result);
+		assertEquals(1, result);
+	}
+	
+	/**
+	* Method : updatePostContent
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 게시글 수정 메서드
+	*/
+	@Test
+	public void updatePostContent(){
+		/***Given***/
+		PostVO postVO = new PostVO();
+		postVO.setBoardid(18);
+		postVO.setPostid(82);
+		postVO.setContentcul("테스트 중입니다.");
+		postVO.setTitlecul("수정 테스트 중");
+
+		/***When***/
+		int result = dao.updatePostContent(postVO);
+
+		/***Then***/
+		assertEquals(1, result);
 	}
 }

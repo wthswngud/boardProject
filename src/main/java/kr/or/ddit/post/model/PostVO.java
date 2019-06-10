@@ -9,20 +9,17 @@ public class PostVO {
 	private int postid2;
 	private String deletecul;
 	private Date dtcreation;
-	private String  userid;
+	private String userid;
 	private String titlecul;
 	private int viewscul;
 	private int lv;
-	private int dual;
-	
+	private int groupSeq;
+	private int rn;
 
-	public PostVO() {
-		
-	}
-	
 	public PostVO(int postid, int boardid, String contentcul, int postid2,
 			String deletecul, Date dtcreation, String userid, String titlecul,
-			int viewscul, int lv) {
+			int viewscul, int lv, int groupSeq, int rn) {
+		super();
 		this.postid = postid;
 		this.boardid = boardid;
 		this.contentcul = contentcul;
@@ -33,6 +30,12 @@ public class PostVO {
 		this.titlecul = titlecul;
 		this.viewscul = viewscul;
 		this.lv = lv;
+		this.groupSeq = groupSeq;
+		this.rn = rn;
+	}
+	
+	public PostVO() {
+		
 	}
 	
 	public int getPostid() {
@@ -95,10 +98,26 @@ public class PostVO {
 	public void setLv(int lv) {
 		this.lv = lv;
 	}
-	public int getDual() {
-		return dual;
+	public int getGroupSeq() {
+		return groupSeq;
 	}
-	public void setDual(int dual) {
-		this.dual = dual;
+	public void setGroupSeq(int groupSeq) {
+		this.groupSeq = groupSeq;
+	}
+	public int getRn() {
+		return rn;
+	}
+	public void setRn(int rn) {
+		this.rn = rn;
+	}
+	
+	@Override
+	public String toString() {
+		return "PostVO [postid=" + postid + ", boardid=" + boardid
+				+ ", contentcul=" + contentcul + ", postid2=" + postid2
+				+ ", deletecul=" + deletecul + ", dtcreation=" + dtcreation
+				+ ", userid=" + userid + ", titlecul=" + titlecul
+				+ ", viewscul=" + viewscul + ", lv=" + lv + ", groupSeq="
+				+ groupSeq + ", rn=" + rn + "]";
 	}
 }

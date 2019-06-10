@@ -5,6 +5,7 @@ import java.util.List;
 import kr.or.ddit.comment.dao.CommentDaoImpl;
 import kr.or.ddit.comment.dao.ICommentDao;
 import kr.or.ddit.comment.model.CommentVO;
+import kr.or.ddit.post.model.PostVO;
 
 public class CommentServiceImpl implements ICommentService{
 	private ICommentDao dao = new CommentDaoImpl();
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements ICommentService{
 	* Method 설명 : 해당 게시글의 댓글을 조회하는 메서드
 	*/
 	@Override
-	public List<CommentVO> selectComment(int postId) {
-		return dao.selectComment(postId);
+	public List<CommentVO> selectComment(CommentVO cv) {
+		return dao.selectComment(cv);
 	}
 }

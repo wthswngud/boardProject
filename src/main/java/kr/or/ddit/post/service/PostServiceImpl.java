@@ -34,11 +34,11 @@ public class PostServiceImpl implements IPostService{
 	* Method 설명 : 해당하는 페이지 리스트를 반환하는 메서드
 	*/
 	@Override
-	public Map<String, Object> getPaging(PageVO pageVO) {
+	public Map<String, Object> getPaging(int boardId, PageVO pageVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		List<PostVO> postList = dao.getPaging(pageVO);
-		int postCnt = dao.postCount();
+		int postCnt = dao.postCount(boardId);
 		
 		
 		int paginationSize = (int)Math.ceil((double)postCnt/pageVO.getPageSize());
@@ -57,8 +57,8 @@ public class PostServiceImpl implements IPostService{
 	* Method 설명 : 게시글 전체수 조회
 	*/
 	@Override
-	public int postCount() {
-		return dao.postCount();
+	public int postCount(int boardId) {
+		return dao.postCount(boardId);
 	}
 
 	/**
@@ -113,15 +113,39 @@ public class PostServiceImpl implements IPostService{
 		return dao.updatePost(postVO);
 	}
 
+	@Override
+	public int postIdMaxValue() {
+		return dao.postIdMaxValue();
+	}
+
 	/**
-	* Method : selectCurrent
+	* Method : selectGroupSeq
 	* 작성자 : PC19
 	* 변경이력 :
+	* @param postVO
 	* @return
-	* Method 설명 : 현재 posts1_seq 시퀀스의 값을 반환하는 메서드
+	* Method 설명 : 부모 게시글의 시퀀스번호를 받아서 부모정보 알아내기
 	*/
 	@Override
-	public int selectCurrent() {
-		return dao.selectCurrent();
+	public PostVO selectParent(PostVO postVO) {
+		return dao.selectParent(postVO);
+	}
+
+	/**
+	* Method : insertReply
+	* 작성자 : PC19
+	* 변경이력 :
+	* @param postVO
+	* @return
+	* Method 설명 : 답글 게시글 등록
+	*/
+	@Override
+	public int insertReply(PostVO postVO) {
+		return dao.insertReply(postVO);
+	}
+
+	@Override
+	public int updatePostContent(PostVO postVO) {
+		return dao.updatePostContent(postVO);
 	}
 }
