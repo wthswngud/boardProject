@@ -20,6 +20,24 @@
 
 
 <script src="${pageContext.request.contextPath}/SE2/js/HuskyEZCreator.js"></script>
+<style>
+	#deleteBtn{
+		float: right;
+	}
+	
+	img{
+		width: 20px;
+		height: 20px;
+	}
+	
+	#attach{
+		display: inline;
+	}
+	
+	#add{
+		float: right;
+	}
+</style>
 <script type="text/javascript">
 var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
 
@@ -55,6 +73,18 @@ $(document).ready(function() {
 				$("#frm").submit();
 			}
 		}
+	})
+	
+	
+	$("#add").on("click", function(){
+// 		alert($(".deleteBtn").length);
+		
+		if($("table tr").length>5){
+			return;
+		}
+		
+		var res = "&nbsp;&nbsp;&nbsp; <input id='attach' type='file'id='profile' name='profile' class='btn btn-default'/> <br><br>";
+		$("#attach1").append(res);
 	})
 });
 
@@ -99,11 +129,25 @@ function validation(){
 										cols="100" style="width: 766px; height: 412px;">${postVO.contentcul}</textarea>
 
 									<div id="attach1">
-										<label>첨부파일</label>&nbsp;&nbsp; 
-										<input id="attach" type="file" id="profile" name="profile" class="multi" maxlength="5" multiple="multiple"/><br>
+										<label>첨부파일</label>&nbsp;&nbsp;&nbsp; <br>
+										<div class="col-sm-10">
+											<table>
+											<c:forEach items="${attachList}" var="attachVO">
+												<tr>
+													<td><input type="hidden" name="fileId" class="fileId" value="${attachVO.attachid}"/></td>
+													<td><a href="#fileInsert" class="btn btn-default" id="btn btn-default deleteBtn">${attachVO.filename}</a></td>
+													<td><button id="deleteBtn" name="deleteBtn" class="btn btn-default" type="button">
+														<img src="${pageContext.request.contextPath}/img/trash_bin_icon-icons.com_67981.png"></button></td>
+												</tr>
+												<br><br>
+											</c:forEach>
+												<tr><td><input id="attach" type="file" id="profile" name="profile" class="btn btn-default"/></td>
+												<td><input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/></td></tr>
+												<tr><td><input type="button" id="savebutton" value="서버전송" class="btn btn-default"/></td></tr>
+											</table>
+										</div>
 									</div>
 								</form>
-								<input type="button" id="savebutton" value="서버전송" maxlength="5"/>
 							</div>
 						</div>
 					</div>

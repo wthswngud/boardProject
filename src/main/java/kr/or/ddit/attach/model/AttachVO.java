@@ -4,9 +4,9 @@ public class AttachVO {
 	private int postid;
 	private String filename;
 	private String attachpath;
-	private String attachid;
+	private int attachid;
 	
-	public AttachVO(int postid, String filename, String attachpath, String attachid) {
+	public AttachVO(int postid, String filename, String attachpath, int attachid) {
 		super();
 		this.postid = postid;
 		this.filename = filename;
@@ -36,10 +36,10 @@ public class AttachVO {
 	public void setAttachpath(String attachpath) {
 		this.attachpath = attachpath;
 	}
-	public String getAttachid() {
+	public int getAttachid() {
 		return attachid;
 	}
-	public void setAttachid(String attachid) {
+	public void setAttachid(int attachid) {
 		this.attachid = attachid;
 	}
 }

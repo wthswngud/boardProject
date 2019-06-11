@@ -1,6 +1,7 @@
 package kr.or.ddit.post.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.ddit.attach.model.AttachVO;
+import kr.or.ddit.attach.service.AttachServiceImpl;
+import kr.or.ddit.attach.service.IAttachService;
 import kr.or.ddit.post.model.PostVO;
 import kr.or.ddit.post.service.IPostService;
 import kr.or.ddit.post.service.PostServiceImpl;
@@ -20,11 +24,13 @@ public class UpdatePostController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(UpdatePostController.class);
     private IPostService postService = null;
+    private IAttachService attachService = null;
 	
 
 	@Override
 	public void init() throws ServletException {
 		postService = new PostServiceImpl();
+		attachService = new AttachServiceImpl();
 	}
 
 	
@@ -43,9 +49,12 @@ public class UpdatePostController extends HttpServlet {
 		postVO.setPostid(postId);
 		
 		PostVO postVO2 = postService.searchPostId(postVO);
+		List<AttachVO> attachList = attachService.selectAttach(postId);
+		
 		
 		request.setAttribute("boardList", getServletContext().getAttribute("boardList"));
 		request.setAttribute("postVO", postVO2);
+		request.setAttribute("attachList", attachList);
 		request.getRequestDispatcher("/post/update.jsp").forward(request, response);
 	}
 
@@ -73,6 +82,7 @@ public class UpdatePostController extends HttpServlet {
 		postVO.setTitlecul(title);
 		
 		int updateResult = postService.updatePostContent(postVO);
+		List<AttachVO> list = attachService.selectAttach(postId);
 		
 		logger.debug("updateResult : " + updateResult);
 		
@@ -80,6 +90,7 @@ public class UpdatePostController extends HttpServlet {
 			logger.debug("수정 성공");
 			request.setAttribute("boardId", boardId);
 			request.setAttribute("postId", postId);
+			request.setAttribute("attachList", list);
 			request.getRequestDispatcher("/read").forward(request, response);
 		}
 	}

@@ -56,6 +56,17 @@ $(document).ready(function() {
 			}
 		}
 	})
+	
+	var count =0;
+	$("#add").on("click", function(){
+		count+=1;
+		if(count>4){
+			alert("첨부파일은 최대 5개까지 가능합니다");
+			return;
+		}
+		var res = "<label>첨부파일</label>&nbsp;&nbsp; <input id='attach' type='file'id='profile' name='profile' class='btn btn-default'/> <br>";
+		$("#attach1").append(res);
+	})
 });
 
 // 필수값 Check
@@ -97,10 +108,11 @@ function validation(){
 
 									<textarea name="smarteditor" id="smarteditor" rows="10"
 										cols="100" style="width: 766px; height: 412px;"></textarea>
-
+									<br>
 									<div id="attach1">
 										<label>첨부파일</label>&nbsp;&nbsp; <input id="attach" type="file"
-											id="profile" name="profile" class="multi" maxlength="5" multiple="multiple"/><br>
+											id="profile" name="profile" class="btn btn-default"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/><br>
 									</div>
 								</form>
 								<input type="button" id="savebutton" value="서버전송" maxlength="5"/>

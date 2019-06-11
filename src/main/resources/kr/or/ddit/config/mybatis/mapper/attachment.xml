@@ -8,4 +8,35 @@
 		FROM	ATTACHMENT1
 	</select>
 	
+	<!-- 첨부파일 경로 등록 -->
+	<insert id="insertAttach" parameterType="attachVO">
+		INSERT INTO ATTACHMENT1
+		VALUES(
+			ATTACHMENT_SEQ.NEXTVAL,
+			#{postid},
+			#{attachpath},
+			#{filename}
+		)
+	</insert>
+	
+	<!-- seq번호를 입력받아 해당하는 리스트를 반환 -->
+	<select id="selectAttach" parameterType="int" resultType="attachVO">
+		SELECT	*
+		FROM	ATTACHMENT1
+		WHERE	POSTID = #{postid}
+	</select>
+	
+	<!-- 첨부파일 id를 받아서 해당 vo를 반환한다. -->
+	<select id="selectVO" parameterType="int" resultType="attachVO">
+		SELECT	*
+		FROM	ATTACHMENT1
+		WHERE	ATTACHID = #{attachid}
+	</select>
+	
+	<!-- 첨부파일 삭제 쿼리문 -->
+	<delete id="deleteAttach" parameterType="int">
+		DELETE	
+		FROM	ATTACHMENT1
+		WHERE	ATTACHID = #{attachid}
+	</delete>
 </mapper>

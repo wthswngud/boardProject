@@ -56,7 +56,8 @@
 									
 									<div id="attach1">
 										<label>첨부파일</label>&nbsp;&nbsp;
-										<input id="attach" type = "file" id="file" name="file"  class="multi" maxlength="5"/><br>
+										<input id="attach" type = "file" id="file" name="file"/><br>
+										<input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/><br>
 										
 										<button id="btn" class = "btn" type="submit">생성</button>
 									</div>

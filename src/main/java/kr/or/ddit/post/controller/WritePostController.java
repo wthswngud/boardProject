@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.ddit.attach.model.AttachVO;
+import kr.or.ddit.attach.service.AttachServiceImpl;
+import kr.or.ddit.attach.service.IAttachService;
 import kr.or.ddit.board.model.BoardVO;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -22,10 +25,12 @@ public class WritePostController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(WritePostController.class);
 	private IBoardService boardService = null;
+	private IAttachService attachService = null;
        
 	@Override
 	public void init() throws ServletException {
 		boardService = new BoardServiceImpl();
+		attachService = new AttachServiceImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,7 +52,6 @@ public class WritePostController extends HttpServlet {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
-		
 		
 		request.setAttribute("userId", userVO.getUserid());
 		request.setAttribute("postId", postId);

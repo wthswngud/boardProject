@@ -34,4 +34,9 @@ public class CommentServiceImpl implements ICommentService{
 	public List<CommentVO> selectComment(CommentVO cv) {
 		return dao.selectComment(cv);
 	}
+
+	@Override
+	public int deleteComment(int mentId) {
+		return dao.deleteComment(mentId);
+	}
 }

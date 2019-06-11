@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.or.ddit.attach.model.AttachVO;
+import kr.or.ddit.attach.service.AttachServiceImpl;
+import kr.or.ddit.attach.service.IAttachService;
 import kr.or.ddit.board.model.BoardVO;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -30,6 +33,7 @@ public class ReadBoardController extends HttpServlet {
 	private IPostService postService = null;
 	private IBoardService boardService = null;
 	private ICommentService commentService = null;
+	private IAttachService attachService = null;
 	
        
 	@Override
@@ -37,6 +41,7 @@ public class ReadBoardController extends HttpServlet {
 		postService = new PostServiceImpl();
 		boardService = new BoardServiceImpl();
 		commentService = new CommentServiceImpl();
+		attachService = new AttachServiceImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,8 +87,10 @@ public class ReadBoardController extends HttpServlet {
 		
 		logger.debug("postVO1 : {}", postVO1);
 		
-		
+		List<AttachVO> attachList = attachService.selectAttach(postId);
 		List<BoardVO> boardList = boardService.boardList();
+		
+		request.setAttribute("attachList", attachList);
 		request.setAttribute("boardList", boardList);
 		request.setAttribute("postVO", postVO1);
 		request.setAttribute("boardVO", boardVO);
@@ -92,7 +99,7 @@ public class ReadBoardController extends HttpServlet {
 		request.setAttribute("commentList", list);
 		
 		
-		
+		request.getRequestDispatcher("/FileDownload.jsp");
 		request.getRequestDispatcher("/common/left.jsp");
 		request.getRequestDispatcher("/board/read.jsp").forward(request, response);
 	}
