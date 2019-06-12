@@ -75,7 +75,7 @@
 		AND     BOARDID=#{boardid}	
 	</select>
 	
-	<!-- 게시글 등록 후 등록한 게시물의 번호를 반환하는 쿼리문 -->
+	<!-- 게시글 등록하는 쿼리문 -->
 	<insert id="insertPost" keyProperty="seq" parameterType="postVO">
 		INSERT INTO POSTS1
     	VALUES(

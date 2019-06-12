@@ -77,15 +77,21 @@ $(document).ready(function() {
 	
 	
 	$("#add").on("click", function(){
-// 		alert($(".deleteBtn").length);
-		
-		if($("table tr").length>5){
+		if($("table tr").length==5){
+			alert("첨부파일은 최대 5개까지 가능합니다");
 			return;
 		}
-		
-		var res = "&nbsp;&nbsp;&nbsp; <input id='attach' type='file'id='profile' name='profile' class='btn btn-default'/> <br><br>";
-		$("#attach1").append(res);
+		var res =  "<tr><td><input id='attach' type='file' id='profile' name='profile' class='btn btn-default'/></td></tr>";
+		$("table").append(res);
 	})
+	
+	$("button[name='deleteBtn']").on("click",function(){
+		var id = $(this).parent().prev().prev().children().val();
+		var value = $(this).parent().next().children().val(id);
+		
+		$(this).parent().parent().remove();
+	})
+	
 });
 
 // 필수값 Check
@@ -119,7 +125,7 @@ function validation(){
 							<hr>
 							<div id="board">
 								<input id="userId" type="hidden" value="userId"/>
-								<form action="${pageContext.request.contextPath}/updatePost" method="post" id="frm">
+								<form action="${pageContext.request.contextPath}/updatePost" method="post" id="frm" enctype="multipart/form-data">
 									<input type="hidden" id="boardId" name="boardId" value="${postVO.boardid}"/>
 									<input type="hidden" id="postId" name="postId" value="${postVO.postid}"/>
 								
@@ -132,19 +138,24 @@ function validation(){
 										<label>첨부파일</label>&nbsp;&nbsp;&nbsp; <br>
 										<div class="col-sm-10">
 											<table>
-											<c:forEach items="${attachList}" var="attachVO">
+												<c:forEach items="${attachList}" var="attachVO">
+													<tr>
+														<td><input type="hidden" name="fileId" class="fileId" value="${attachVO.attachid}"/></td>
+														<td><a href="#fileInsert" class="btn btn-default" id="btn btn-default deleteBtn">${attachVO.filename}</a></td>
+														<td><button id="deleteBtn" name="deleteBtn" class="btn btn-default" type="button">
+															<img src="${pageContext.request.contextPath}/img/trash_bin_icon-icons.com_67981.png"></button></td>
+														<td><input id="deleteId" name="deleteId" class="deleteId" type="hidden"/></td>
+													</tr>
+													<br><br>
+												</c:forEach>
 												<tr>
-													<td><input type="hidden" name="fileId" class="fileId" value="${attachVO.attachid}"/></td>
-													<td><a href="#fileInsert" class="btn btn-default" id="btn btn-default deleteBtn">${attachVO.filename}</a></td>
-													<td><button id="deleteBtn" name="deleteBtn" class="btn btn-default" type="button">
-														<img src="${pageContext.request.contextPath}/img/trash_bin_icon-icons.com_67981.png"></button></td>
+													<td><input id="attach" type="file" id="profile" name="profile" class="btn btn-default"/></td>
 												</tr>
-												<br><br>
-											</c:forEach>
-												<tr><td><input id="attach" type="file" id="profile" name="profile" class="btn btn-default"/></td>
-												<td><input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/></td></tr>
-												<tr><td><input type="button" id="savebutton" value="서버전송" class="btn btn-default"/></td></tr>
 											</table>
+											<input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/>
+											<c:if test="${USER_INFO != null}">
+												<input type="button" id="savebutton" value="게시글 수정" class="btn btn-default"/>
+											</c:if>
 										</div>
 									</div>
 								</form>

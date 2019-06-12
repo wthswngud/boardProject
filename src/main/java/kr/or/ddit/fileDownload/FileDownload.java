@@ -33,14 +33,17 @@ public class FileDownload extends HttpServlet {
 	public void init() throws ServletException {
 		fileService = new AttachServiceImpl();
 	}
+	private static final Logger logger = LoggerFactory.getLogger(FileDownload.class);
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
 		int file_id = Integer.parseInt(request.getParameter("attachId"));
-
+		logger.debug("file_id : " + file_id);
+		
 		AttachVO fileVo = fileService.selectVO(file_id);
+		logger.debug("filepath : " + fileVo.getAttachpath());
 
 		// 파일 업로드된 경로
 		String savePath = fileVo.getAttachpath();

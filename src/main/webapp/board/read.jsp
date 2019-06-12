@@ -66,6 +66,7 @@ textarea.autosize {
 			$("#deleteId").val(id);
 			$("#deleteCommentFrm").submit();
 		})
+		
 		$(".atag").on("click", function() {
 			attachId = $(this).prev().val();
 
@@ -98,12 +99,10 @@ textarea.autosize {
 					<div class="col-sm-8 blog-main">
 						<h2 class="sub-header">게시글 상세 페이지</h2>
 
-						<form id="frm"
-							action="${pageContext.request.contextPath}/updatePost"
-							class="form-horizontal" role="form" method="get">
+						<form id="frm" action="${pageContext.request.contextPath}/updatePost" class="form-horizontal" role="form" method="get">
 							<input type="hidden" name="boardId" value="${postVO.boardid}" />
 							<input type="hidden" name="postId" value="${postVO.postid}" />
-							<input type="hidden" name="content" value="${postVO.contentcul}" />
+							<input type="hidden" name="content" value='${postVO.contentcul}' />
 							<input type="hidden" name="title" value="${postVO.titlecul}" />
 							<input type="hidden" name="title" value="${postVO.titlecul}" />
 
@@ -123,8 +122,7 @@ textarea.autosize {
 								<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
 								<div class="col-sm-10">
 									<c:forEach items="${attachList}" var="attachVO">
-										<input type="hidden" name="fileId" class="fileId"
-											value="${attachVO.attachid}" />
+										<input type="hidden" name="fileId" class="fileId" value="${attachVO.attachid}"/>
 										<a href="#fileInsert" class="atag" id="atag">${attachVO.filename}</a>
 										<br>
 									</c:forEach>
@@ -160,8 +158,7 @@ textarea.autosize {
 						<br>
 
 						<!-- 첨부파일 클릭시 -->
-						<form action="${pageContext.request.contextPath}/fileDownload"
-							id="fileFrm">
+						<form action="${pageContext.request.contextPath}/fileDownload" id="fileFrm">
 							<input id="attachId" type="hidden" name="attachId" />
 						</form>
 
@@ -225,9 +222,8 @@ textarea.autosize {
 						<form id="frmComment"
 							action="${pageContext.request.contextPath}/reply" method="Get"
 							class="form-horizontal" role="form">
-							<input id="postId" type="hidden" name="postId"
-								value="${postVO.postid}" /> <input id="boardId" type="hidden"
-								name="boardId" value="${boardVO.boardid}" />
+							<input id="postId" type="hidden" name="postId" value="${postVO.postid}" />
+							<input id="boardId" type="hidden" name="boardId" value="${boardVO.boardid}" />
 						</form>
 					</div>
 				</div>

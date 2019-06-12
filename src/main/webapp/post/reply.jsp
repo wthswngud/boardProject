@@ -64,8 +64,8 @@ $(document).ready(function() {
 			alert("첨부파일은 최대 5개까지 가능합니다");
 			return;
 		}
-		var res = "<label>첨부파일</label>&nbsp;&nbsp; <input id='attach' type='file'id='profile' name='profile' class='btn btn-default'/> <br>";
-		$("#attach1").append(res);
+		var res = "<tr><td><input id='attach' type='file' id='profile' name='profile' class='btn btn-default'/></td></tr>";
+		$("table").append(res);
 	})
 });
 
@@ -92,7 +92,7 @@ function validation(){
 			<%@include file="/common/left.jsp"%>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<div class="blog-header">
-					<h1 class="blog-title">게시물 작성</h1>
+					<h1 class="blog-title">답글 작성</h1>
 				</div>
 				<div class="row">
 					<div class="col-sm-8 blog-main">
@@ -100,22 +100,40 @@ function validation(){
 							<hr>
 							<div id="board">
 								<input id="userId" type="hidden" value="${userVO.userid}"/>
-								<form action="${pageContext.request.contextPath}/reply" method="post" id="frm">
-									<input type="hidden" name="boardId" value="${boardId}"/>
-									<input type="hidden" name="postId" value="${postId}"/>
+								<form action="${pageContext.request.contextPath}/reply" method="post" id="frm" enctype="multipart/form-data">
+									<input type="hidden" id="boardId" name="boardId" value="${postVO.boardid}"/>
+									<input type="hidden" id="postId" name="postId" value="${postVO.postid}"/>
 								
-									<label>제목</label>&nbsp;&nbsp; <input type="text" id="title" name="title" /><br><br>
+									<label>제목</label>&nbsp;&nbsp; <input type="text" id="title" name="title" value="${postVO.titlecul}"/><br><br>
 
 									<textarea name="smarteditor" id="smarteditor" rows="10"
-										cols="100" style="width: 766px; height: 412px;"></textarea>
-									<br>
+										cols="100" style="width: 766px; height: 412px;">${postVO.contentcul}</textarea>
+
 									<div id="attach1">
-										<label>첨부파일</label>&nbsp;&nbsp; <input id="attach" type="file"
-											id="profile" name="profile" class="btn btn-default"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/><br>
+										<label>첨부파일</label>&nbsp;&nbsp;&nbsp; <br>
+										<div class="col-sm-10">
+											<table>
+												<c:forEach items="${attachList}" var="attachVO">
+													<tr>
+														<td><input type="hidden" name="fileId" class="fileId" value="${attachVO.attachid}"/></td>
+														<td><a href="#fileInsert" class="btn btn-default" id="btn btn-default deleteBtn">${attachVO.filename}</a></td>
+														<td><button id="deleteBtn" name="deleteBtn" class="btn btn-default" type="button">
+															<img src="${pageContext.request.contextPath}/img/trash_bin_icon-icons.com_67981.png"></button></td>
+														<td><input id="deleteId" name="deleteId" class="deleteId" type="hidden"/></td>
+													</tr>
+													<br><br>
+												</c:forEach>
+												<tr>
+													<td><input id="attach" type="file" id="profile" name="profile" class="btn btn-default"/></td>
+												</tr>
+											</table>
+											<input id="add" name="add" type="button" class="btn btn-default" value="첨부파일 추가"/>
+											<c:if test="${USER_INFO != null}">
+												<input type="button" id="savebutton" value="게시글 수정" class="btn btn-default"/>
+											</c:if>
+										</div>
 									</div>
 								</form>
-								<input type="button" id="savebutton" value="서버전송" maxlength="5"/>
 							</div>
 						</div>
 					</div>
