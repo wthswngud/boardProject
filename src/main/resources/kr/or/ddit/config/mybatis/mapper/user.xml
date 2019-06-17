@@ -9,8 +9,8 @@
   </select>
   
   <select id="getUser" parameterType="String" resultType="userVO">
-  	SELECT *
-  	FROM	users
+  	SELECT /*+ FULL(USERS)*/*
+  	FROM	USERS
   	WHERE	USERID = #{userId}
   	ORDER BY USERID
   </select>
